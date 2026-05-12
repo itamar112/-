@@ -1,0 +1,1100 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>למה קיים בית ספר?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+:root {
+  color-scheme: dark;
+  --ink: #f5fbff;
+  --muted: #a7b8c6;
+  --paper: #06080d;
+  --surface: rgba(12, 19, 29, 0.74);
+  --line: rgba(155, 239, 255, 0.2);
+  --red: #ff3f62;
+  --teal: #00e5d4;
+  --gold: #ffe45e;
+  --blue: #5fb3ff;
+  --green: #86ff8f;
+  --shadow: 0 24px 90px rgba(0, 229, 212, 0.13);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  font-family: "Assistant", Arial, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 16% 12%, rgba(255, 63, 98, 0.24), transparent 24rem),
+    radial-gradient(circle at 82% 18%, rgba(0, 229, 212, 0.24), transparent 26rem),
+    radial-gradient(circle at 56% 92%, rgba(134, 255, 143, 0.13), transparent 22rem),
+    linear-gradient(135deg, #05070c 0%, #07131a 46%, #0f0b16 100%);
+  overflow-x: hidden;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(rgba(155, 239, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(155, 239, 255, 0.08) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), transparent 82%);
+}
+
+#history-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 3vw, 2.25rem);
+  background: rgba(5, 8, 13, 0.72);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+}
+
+.top-nav,
+.controls,
+.hero-actions {
+  display: flex;
+  align-items: center;
+}
+
+.creator-credit {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.top-nav {
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.top-nav a {
+  min-width: 4.6rem;
+  padding: 0.5rem 0.8rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+  border-radius: 999px;
+}
+
+.top-nav a:hover,
+.top-nav a:focus-visible {
+  color: var(--ink);
+  background: rgba(0, 229, 212, 0.13);
+  outline: none;
+}
+
+.controls {
+  gap: 0.45rem;
+}
+
+.icon-button {
+  display: grid;
+  width: 2.55rem;
+  height: 2.55rem;
+  place-items: center;
+  color: var(--ink);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.icon-button:hover {
+  transform: translateY(-2px);
+  color: #061014;
+  background: var(--teal);
+  box-shadow: 0 0 28px rgba(0, 229, 212, 0.38);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  min-height: calc(100svh - 4.5rem);
+  padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 6vw, 5rem) 2rem;
+}
+
+.hero-copy {
+  max-width: 58rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  color: var(--teal);
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  font-weight: 800;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(3.2rem, 10vw, 8.2rem);
+  line-height: 0.93;
+  text-shadow: 0 0 34px rgba(0, 229, 212, 0.2);
+}
+
+.lead {
+  max-width: 40rem;
+  color: #d7e7ef;
+  font-size: clamp(1.2rem, 2.6vw, 1.65rem);
+  line-height: 1.55;
+}
+
+.hero-actions {
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.primary-action,
+.secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem 1.1rem;
+  font-weight: 800;
+  border-radius: 0.6rem;
+}
+
+.primary-action {
+  color: #061014;
+  background: linear-gradient(135deg, var(--teal), var(--green));
+  box-shadow: 0 0 34px rgba(0, 229, 212, 0.32);
+}
+
+.secondary-action {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+}
+
+.progress-band {
+  margin: 0 clamp(1rem, 6vw, 5rem) 4rem;
+  padding: 1rem;
+  background: rgba(7, 13, 20, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  box-shadow: var(--shadow);
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.65rem;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.progress-track {
+  height: 0.55rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.progress-track span {
+  display: block;
+  width: 10%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--green), var(--gold), var(--red));
+  border-radius: inherit;
+  transition: width 400ms ease;
+}
+
+.timeline-section,
+.chapters-shell {
+  padding: 4rem clamp(1rem, 6vw, 5rem);
+}
+
+.section-heading {
+  max-width: 44rem;
+}
+
+.section-heading h2 {
+  margin-bottom: 2rem;
+  font-size: clamp(2.1rem, 5vw, 4rem);
+  line-height: 1.05;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  max-width: 68rem;
+  margin-inline: auto;
+}
+
+.time-node {
+  position: relative;
+  min-height: 8rem;
+  padding: 1rem 4rem 1rem 1rem;
+  text-align: right;
+  cursor: pointer;
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+    rgba(5, 8, 13, 0.54);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.time-node::before {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  content: "";
+  background: var(--teal);
+  box-shadow: 0 0 16px rgba(0, 229, 212, 0.75);
+  border-radius: 50%;
+}
+
+.time-node::after {
+  position: absolute;
+  top: 2.4rem;
+  right: 1.64rem;
+  bottom: -1.05rem;
+  width: 1px;
+  content: "";
+  background: linear-gradient(to bottom, rgba(0, 229, 212, 0.45), transparent);
+}
+
+.time-node:last-child::after {
+  display: none;
+}
+
+.time-node span {
+  display: block;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.time-node strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(1.12rem, 2vw, 1.35rem);
+  line-height: 1.25;
+}
+
+.time-node small {
+  display: block;
+  max-width: 56rem;
+  margin-top: 0.45rem;
+  color: #d7e7ef;
+  font-size: 1.02rem;
+  line-height: 1.45;
+}
+
+.time-node em {
+  display: inline-flex;
+  margin-top: 0.85rem;
+  padding: 0.25rem 0.6rem;
+  color: #061014;
+  font-size: 0.88rem;
+  font-style: normal;
+  font-weight: 800;
+  background: var(--teal);
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(0, 229, 212, 0.22);
+}
+
+.time-node:hover,
+.time-node.is-active {
+  transform: translateY(-4px);
+  background: rgba(0, 229, 212, 0.1);
+  border-color: rgba(0, 229, 212, 0.55);
+}
+
+.info-node {
+  cursor: default;
+}
+
+.info-node::before {
+  background: var(--gold);
+  box-shadow: 0 0 16px rgba(255, 228, 94, 0.6);
+}
+
+.info-node:hover {
+  transform: none;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+    rgba(5, 8, 13, 0.54);
+  border-color: var(--line);
+}
+
+.timeline-source {
+  max-width: 68rem;
+  margin: 1rem auto 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.timeline-source a {
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.chapters-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+  gap: 1.25rem;
+  align-items: start;
+  padding-bottom: 6rem;
+}
+
+.chapter-view {
+  position: relative;
+  min-height: min(42rem, 78svh);
+  touch-action: pan-y;
+}
+
+.chapter-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 31rem;
+  padding: clamp(1.35rem, 5vw, 4rem);
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(135deg, rgba(9, 18, 29, 0.93), rgba(12, 25, 30, 0.78)),
+    linear-gradient(90deg, rgba(0, 229, 212, 0.12), rgba(255, 63, 98, 0.12));
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  box-shadow: var(--shadow);
+  transform: translateX(-2.5rem) scale(0.97);
+  transition: opacity 360ms ease, transform 360ms ease;
+}
+
+.chapter-card.is-active {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.chapter-number {
+  margin-bottom: 1rem;
+  color: var(--red);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.chapter-card h2 {
+  max-width: 42rem;
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 5vw, 4.4rem);
+  line-height: 1.04;
+}
+
+.chapter-card p,
+.chapter-card li {
+  max-width: 46rem;
+  color: #d7e7ef;
+  font-size: clamp(1.12rem, 2vw, 1.45rem);
+  line-height: 1.55;
+}
+
+.chapter-card ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(9rem, 1fr));
+  gap: 0.65rem;
+  max-width: 44rem;
+  padding: 0;
+  margin: 1rem 0;
+  list-style: none;
+}
+
+.chapter-card li {
+  padding: 0.65rem 0.85rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+}
+
+.gesture-panel {
+  position: sticky;
+  top: 5.5rem;
+  padding: 1.1rem;
+  background:
+    linear-gradient(135deg, rgba(0, 229, 212, 0.12), rgba(255, 63, 98, 0.12)),
+    rgba(5, 8, 13, 0.88);
+  color: #fff;
+  border-radius: 0.85rem;
+  box-shadow: var(--shadow);
+}
+
+.gesture-panel h2 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.gesture-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.gesture-grid div {
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.55rem;
+}
+
+.gesture-grid span {
+  display: block;
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.gesture-grid strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.02rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 900px) {
+  .site-header {
+    flex-wrap: wrap;
+  }
+
+  .top-nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hero,
+  .chapters-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding-top: 2rem;
+  }
+
+  .timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-view {
+    min-height: 35rem;
+  }
+
+  .gesture-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .creator-credit {
+    width: 100%;
+    white-space: normal;
+  }
+
+  .controls {
+    margin-inline-start: auto;
+  }
+
+  .top-nav a {
+    min-width: 0;
+    flex: 1;
+    padding-inline: 0.4rem;
+  }
+
+  .hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .primary-action,
+  .secondary-action {
+    width: 100%;
+  }
+
+  .chapter-card ul {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-card {
+    min-height: 34rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+    </style>
+  </head>
+  <body>
+    <canvas id="history-canvas" aria-hidden="true"></canvas>
+
+    <header class="site-header">
+      <p class="creator-credit">עורך/מציג/גאון/מגניב: איתמר ריזקן</p>
+
+      <nav class="top-nav" aria-label="ניווט ראשי">
+        <a href="#timeline">ציר זמן</a>
+        <a href="#chapters">פרקים</a>
+        <a href="#future">העתיד</a>
+      </nav>
+
+      <div class="controls" aria-label="פקדי הצגה">
+        <button class="icon-button" id="prevBtn" type="button" aria-label="פרק קודם" title="פרק קודם">
+          ‹
+        </button>
+        <button class="icon-button" id="nextBtn" type="button" aria-label="פרק הבא" title="פרק הבא">
+          ›
+        </button>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">מצגת עתידנית אינטראקטיבית</p>
+          <h1 id="hero-title">למה קיים בית ספר?</h1>
+          <p class="lead">
+            מסע מהלמידה דרך החיים, דרך בתי הספר הראשונים, ועד כיתות חכמות
+            שמותאמות אישית בעזרת טכנולוגיה ובינה מלאכותית.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#chapters">להתחיל את המסע</a>
+            <a class="secondary-action" href="#timeline">לראות ציר זמן</a>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="progress-band" aria-label="מד התקדמות">
+        <div class="progress-label">
+          <span id="activeChapterTitle">למה קיים בית ספר?</span>
+          <span id="activeChapterCount">1 / 10</span>
+        </div>
+        <div class="progress-track">
+          <span id="progressFill"></span>
+        </div>
+      </section>
+
+      <section class="timeline-section" id="timeline" aria-labelledby="timeline-title">
+        <div class="section-heading">
+          <p class="eyebrow">במבט אחד</p>
+          <h2 id="timeline-title">ציר הזמן המלא של בית הספר</h2>
+        </div>
+
+        <div class="timeline">
+          <button class="time-node is-active" type="button" data-target="2">
+            <span>האלף הרביעי לפנה״ס</span>
+            <strong>מצרים העתיקה, שומר ובבל</strong>
+            <small>מוסדות חינוך ראשונים לילדי אליטה: קריאה, כתיבה, דת, מתמטיקה, חוק ורפואה מסורתית.</small>
+            <em>קשור לשקופית 3</em>
+          </button>
+          <button class="time-node" type="button" data-target="2">
+            <span>העולם העתיק</span>
+            <strong>בתי אדובה בבבל</strong>
+            <small>לוחות חרס עם תרגילי חשבון, שינון מילים, נגינה וחוק. כנראה בעיקר לבנים.</small>
+            <em>קשור לשקופית 3</em>
+          </button>
+          <button class="time-node" type="button" data-target="2">
+            <span>האלף השני לפנה״ס</span>
+            <strong>בתי ספר בסין</strong>
+            <small>בתחילה לילדי אצולה, ובהמשך גם לבני מעמדות נמוכים יותר.</small>
+            <em>קשור לשקופית 3</em>
+          </button>
+          <button class="time-node" type="button" data-target="4">
+            <span>המאה ה־6 לפנה״ס</span>
+            <strong>קונפוציוס וחינוך לכל</strong>
+            <small>רעיון שהשפיע על החינוך בקיסרות הסינית ועל תפיסת הלמידה כמפתח חברתי.</small>
+            <em>קשור לשקופית 5</em>
+          </button>
+          <div class="time-node info-node">
+            <span>המאה ה־2 לפנה״ס</span>
+            <strong>גרסה ראשונית לבחינה הקיסרית</strong>
+            <small>בסין נבחנה יכולת אישית ולא רק מעמד משפחתי.</small>
+          </div>
+          <button class="time-node" type="button" data-target="4">
+            <span>יוון העתיקה</span>
+            <strong>חינוך, רטוריקה ומדעים</strong>
+            <small>במקומות מסוימים נפתחה גישה גם למעמדות נמוכים. למדו רטוריקה, גאומטריה, אסטרונומיה וביולוגיה.</small>
+            <em>קשור לשקופית 5</em>
+          </button>
+          <button class="time-node" type="button" data-target="2">
+            <span>המאות ה־4 עד ה־8</span>
+            <strong>מוסדות חינוך בצפון הודו</strong>
+            <small>התפתחו מסגרות לילדים וללימודים גבוהים, ובכפרים פעלו בתי ספר במימון הקהילה.</small>
+            <em>קשור לשקופית 3</em>
+          </button>
+          <button class="time-node" type="button" data-target="4">
+            <span>תחילת ימי הביניים</span>
+            <strong>בתי ספר כנסייתיים באירופה</strong>
+            <small>החינוך עבר בעיקר למוסדות דתיים של הכנסייה, בעיקר לילדי אליטה ולבנים.</small>
+            <em>קשור לשקופית 5</em>
+          </button>
+          <button class="time-node" type="button" data-target="4">
+            <span>המאה ה־10</span>
+            <strong>מדרסות בארצות האסלאם</strong>
+            <small>מסגרות לימוד שכללו גם מתמטיקה, פילוסופיה ומדעים.</small>
+            <em>קשור לשקופית 5</em>
+          </button>
+          <button class="time-node" type="button" data-target="6">
+            <span>המאה ה־11</span>
+            <strong>לימוד חינם באירופה</strong>
+            <small>הכנסייה החליטה ללמד בחינם גם ילדים ממעמדות נמוכים, אך רק כ־5% ידעו קרוא וכתוב.</small>
+            <em>קשור לשקופית 7</em>
+          </button>
+          <div class="time-node info-node">
+            <span>המאה ה־7 לספירה</span>
+            <strong>הבחינה הקיסרית הופכת רשמית</strong>
+            <small>בסין הבחינה הפכה למנגנון רשמי במערכת השלטון והחינוך.</small>
+          </div>
+          <button class="time-node" type="button" data-target="1">
+            <span>ימי הביניים</span>
+            <strong>גילדות ושוליות</strong>
+            <small>הכשרה מקצועית עברה דרך עבודה מעשית עם בעלי מקצוע מנוסים.</small>
+            <em>קשור לשקופית 2</em>
+          </button>
+          <button class="time-node" type="button" data-target="5">
+            <span>העת החדשה</span>
+            <strong>תיעוש ורעיונות הנאורות</strong>
+            <small>הצורך במיומנויות בסיסיות לציבור הרחב התחזק, והפצת ידע קיבלה הצדקה רחבה יותר.</small>
+            <em>קשור לשקופית 6</em>
+          </button>
+          <button class="time-node" type="button" data-target="5">
+            <span>המאה ה־19</span>
+            <strong>תחילת בית הספר המודרני</strong>
+            <small>הלאומיות העבירה את החינוך בהדרגה ממוסדות דת למדינה. יותר ילדים וילדות קיבלו חינוך ציבורי.</small>
+            <em>קשור לשקופית 6</em>
+          </button>
+          <button class="time-node" type="button" data-target="6">
+            <span>המאה ה־19</span>
+            <strong>הוראס מאן והמודל הסטנדרטי</strong>
+            <small>מודל בהשראת פרוסיה, שראה בבית הספר כלי לחברה דמוקרטית, חופשית ושוויונית יותר.</small>
+            <em>קשור לשקופית 7</em>
+          </button>
+          <div class="time-node info-node">
+            <span>1870</span>
+            <strong>מקוה ישראל</strong>
+            <small>בית הספר החקלאי הראשון בארץ ישראל.</small>
+          </div>
+          <div class="time-node info-node">
+            <span>1886</span>
+            <strong>בית ספר חביב</strong>
+            <small>בית הספר העברי הראשון, בראשון לציון.</small>
+          </div>
+          <div class="time-node info-node">
+            <span>1905</span>
+            <strong>הגימנסיה העברית הרצליה</strong>
+            <small>בית הספר התיכון העברי הראשון בארץ ישראל, ביפו.</small>
+          </div>
+          <button class="time-node" type="button" data-target="6">
+            <span>1953</span>
+            <strong>חוק חינוך ממלכתי בישראל</strong>
+            <small>החוק עיצב את מערכת החינוך הממלכתית בישראל לאחר תקופת החלוקה הישנה.</small>
+            <em>קשור לשקופית 7</em>
+          </button>
+          <button class="time-node" type="button" data-target="6">
+            <span>סוף שנות ה־60</span>
+            <strong>רפורמת החטיבות בישראל</strong>
+            <small>המערכת חולקה ליסודי א׳–ו׳, חטיבת ביניים ז׳–ט׳, ותיכון י׳–י״ב.</small>
+            <em>קשור לשקופית 7</em>
+          </button>
+        </div>
+        <p class="timeline-source">
+          מבוסס על ציר הזמן שסיפקת מתוך הערך
+          <a href="https://he.wikipedia.org/wiki/%D7%91%D7%99%D7%AA_%D7%A1%D7%A4%D7%A8">“בית ספר” בוויקיפדיה</a>.
+        </p>
+      </section>
+
+      <section class="chapters-shell" id="chapters" aria-label="פרקי המצגת">
+        <div class="chapter-view">
+          <article class="chapter-card is-active" data-index="0">
+            <p class="chapter-number">01</p>
+            <h2>למה קיים בית ספר?</h2>
+            <p>
+              היום בית ספר נראה דבר רגיל, אבל בעבר הוא בכלל לא היה קיים.
+              אנשים הבינו שכדי לפתח מדינה וחברה צריך מקום מסודר שבו ילדים
+              ילמדו ידע חשוב.
+            </p>
+            <p>בית הספר נוצר כדי להעביר ידע לדורות הבאים בצורה קבועה ומאורגנת.</p>
+          </article>
+
+          <article class="chapter-card" data-index="1">
+            <p class="chapter-number">02</p>
+            <h2>איך אנשים למדו לפני בתי הספר?</h2>
+            <p>לפני אלפי שנים ילדים לא למדו בכיתות. הם למדו דרך החיים עצמם:</p>
+            <ul>
+              <li>עבודה עם ההורים</li>
+              <li>צפייה במבוגרים</li>
+              <li>סיפורים ומסורת</li>
+              <li>ניסיון אישי</li>
+            </ul>
+            <p>רוב האנשים בכלל לא ידעו לקרוא או לכתוב.</p>
+          </article>
+
+          <article class="chapter-card" data-index="2">
+            <p class="chapter-number">03</p>
+            <h2>בתי הספר הראשונים בעולם</h2>
+            <p>
+              בתי הספר הראשונים הופיעו לפני בערך 5,000 שנה במצרים העתיקה
+              ובמסופוטמיה.
+            </p>
+            <ul>
+              <li>קריאה</li>
+              <li>כתיבה</li>
+              <li>חישוב מיסים</li>
+              <li>ניהול מסמכים</li>
+            </ul>
+            <p>רק ילדים ממשפחות עשירות בדרך כלל יכלו ללמוד שם.</p>
+          </article>
+
+          <article class="chapter-card" data-index="3">
+            <p class="chapter-number">04</p>
+            <h2>מה למדו בבתי הספר העתיקים?</h2>
+            <p>בבתי הספר העתיקים לא למדו כמו היום. התלמידים למדו בעיקר דברים שעזרו למדינה:</p>
+            <ul>
+              <li>כתיבה וקריאה</li>
+              <li>חשבון</li>
+              <li>דת</li>
+              <li>ניהול מסמכים וחוקים</li>
+            </ul>
+            <p>חלק מהתלמידים התאמנו שעות על כתיבה מדויקת.</p>
+          </article>
+
+          <article class="chapter-card" data-index="4">
+            <p class="chapter-number">05</p>
+            <h2>איך החינוך התפתח עם הזמן?</h2>
+            <p>
+              ביוון העתיקה התחילו ללמד גם חשיבה ופילוסופיה. המטרה כבר לא הייתה
+              רק להכין עובדים אלא גם לפתח אנשים חושבים.
+            </p>
+            <ul>
+              <li>נאומים</li>
+              <li>פוליטיקה</li>
+              <li>כתיבה</li>
+              <li>חוקים</li>
+            </ul>
+          </article>
+
+          <article class="chapter-card" data-index="5">
+            <p class="chapter-number">06</p>
+            <h2>המהפכה התעשייתית ושינוי החינוך</h2>
+            <p>
+              במאה ה־18 וה־19 התחילה המהפכה התעשייתית. מפעלים גדולים שינו את
+              העולם במהירות.
+            </p>
+            <ul>
+              <li>קריאת הוראות</li>
+              <li>חישוב מספרים</li>
+              <li>הגעה בזמן</li>
+              <li>עבודה מסודרת</li>
+            </ul>
+            <p>בגלל זה מדינות התחילו להקים בתי ספר ציבוריים.</p>
+          </article>
+
+          <article class="chapter-card" data-index="6">
+            <p class="chapter-number">07</p>
+            <h2>למה המדינות השקיעו בבתי ספר?</h2>
+            <p>מדינות הבינו שחינוך עוזר לפתח את המדינה. אנשים משכילים יכולים:</p>
+            <ul>
+              <li>לעבוד במקצועות מתקדמים</li>
+              <li>לפתח טכנולוגיה</li>
+              <li>להקים עסקים</li>
+              <li>לחזק את הכלכלה</li>
+            </ul>
+            <p>החינוך גם עזר להפחית עבודת ילדים.</p>
+          </article>
+
+          <article class="chapter-card" data-index="7">
+            <p class="chapter-number">08</p>
+            <h2>ביקורת על מערכת החינוך</h2>
+            <p>יש אנשים שחושבים שמערכת החינוך לא מתאימה לעולם המודרני.</p>
+            <ul>
+              <li>יותר מדי מבחנים וציונים</li>
+              <li>פחות מדי יצירתיות</li>
+              <li>שיטות לימוד ישנות</li>
+              <li>פחות התאמה אישית לכל תלמיד</li>
+            </ul>
+            <p>העולם הטכנולוגי משתנה מהר מאוד.</p>
+          </article>
+
+          <article class="chapter-card" data-index="8" id="future">
+            <p class="chapter-number">09</p>
+            <h2>איך יראה בית הספר בעתיד?</h2>
+            <p>היום כבר משתמשים במחשבים, בטאבלטים, בלמידה דרך האינטרנט ובבינה מלאכותית.</p>
+            <p>
+              בעתיד יכול להיות שתלמידים ילמדו בצורה אישית יותר עם מערכות
+              חכמות.
+            </p>
+          </article>
+
+          <article class="chapter-card" data-index="9">
+            <p class="chapter-number">10</p>
+            <h2>סיכום</h2>
+            <p>
+              בית הספר נוצר כי החברה הייתה צריכה דרך מסודרת להעביר ידע. עם
+              השנים הוא הפך לחלק מרכזי בהתפתחות של מדינות, טכנולוגיה וכלכלה.
+            </p>
+            <p>גם היום מערכת החינוך ממשיכה להשתנות יחד עם העולם החדש.</p>
+          </article>
+        </div>
+
+        <aside class="gesture-panel" aria-label="מחוות ושליטה">
+          <h2>שליטה בהצגה</h2>
+          <div class="gesture-grid">
+            <div>
+              <span>גרירה</span>
+              <strong>החליקו ימינה או שמאלה כדי לעבור פרק</strong>
+            </div>
+            <div>
+              <span>מקלדת</span>
+              <strong>החיצים מעבירים בין השקפים</strong>
+            </div>
+            <div>
+              <span>לחיצה</span>
+              <strong>ציר הזמן קופץ לתקופה המתאימה</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+const chapters = Array.from(document.querySelectorAll(".chapter-card"));
+const chapterView = document.querySelector(".chapter-view");
+const nodes = Array.from(document.querySelectorAll(".time-node"));
+const prevBtn = document.querySelector("#prevBtn");
+const nextBtn = document.querySelector("#nextBtn");
+const progressFill = document.querySelector("#progressFill");
+const activeChapterTitle = document.querySelector("#activeChapterTitle");
+const activeChapterCount = document.querySelector("#activeChapterCount");
+const canvas = document.querySelector("#history-canvas");
+const ctx = canvas.getContext("2d");
+
+let activeIndex = 0;
+let touchStartX = 0;
+let touchStartY = 0;
+let pointerX = 0;
+let pointerY = 0;
+let particles = [];
+
+const palette = ["#00e5d4", "#ffe45e", "#ff3f62", "#5fb3ff", "#86ff8f"];
+
+function setActiveChapter(nextIndex) {
+  activeIndex = Math.max(0, Math.min(chapters.length - 1, nextIndex));
+
+  chapters.forEach((chapter, index) => {
+    chapter.classList.toggle("is-active", index === activeIndex);
+  });
+
+  nodes.forEach((node) => {
+    if (!node.dataset.target) {
+      node.classList.remove("is-active");
+      return;
+    }
+
+    node.classList.toggle("is-active", Number(node.dataset.target) === activeIndex);
+  });
+
+  const title = chapters[activeIndex].querySelector("h2").textContent;
+  activeChapterTitle.textContent = title;
+  activeChapterCount.textContent = `${activeIndex + 1} / ${chapters.length}`;
+  progressFill.style.width = `${((activeIndex + 1) / chapters.length) * 100}%`;
+}
+
+function goNext() {
+  setActiveChapter(activeIndex + 1);
+}
+
+function goPrev() {
+  setActiveChapter(activeIndex - 1);
+}
+
+prevBtn.addEventListener("click", goPrev);
+nextBtn.addEventListener("click", goNext);
+
+nodes.forEach((node) => {
+  node.addEventListener("click", () => {
+    if (!node.dataset.target) {
+      return;
+    }
+
+    setActiveChapter(Number(node.dataset.target));
+    document.querySelector("#chapters").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "ArrowLeft") {
+    goNext();
+  }
+
+  if (event.key === "ArrowRight") {
+    goPrev();
+  }
+});
+
+chapterView.addEventListener("touchstart", (event) => {
+  const touch = event.changedTouches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+});
+
+chapterView.addEventListener("touchend", (event) => {
+  const touch = event.changedTouches[0];
+  const dx = touch.clientX - touchStartX;
+  const dy = touch.clientY - touchStartY;
+
+  if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+    if (dx < 0) {
+      goNext();
+    } else {
+      goPrev();
+    }
+  }
+});
+
+document.addEventListener("pointermove", (event) => {
+  pointerX = event.clientX / window.innerWidth - 0.5;
+  pointerY = event.clientY / window.innerHeight - 0.5;
+});
+
+function resizeCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.floor(window.innerWidth * dpr);
+  canvas.height = Math.floor(window.innerHeight * dpr);
+  canvas.style.width = `${window.innerWidth}px`;
+  canvas.style.height = `${window.innerHeight}px`;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  particles = Array.from({ length: Math.min(78, Math.floor(window.innerWidth / 16)) }, (_, index) => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    radius: 1.2 + Math.random() * 2.8,
+    speed: 0.16 + Math.random() * 0.42,
+    color: palette[index % palette.length],
+    phase: Math.random() * Math.PI * 2,
+  }));
+}
+
+function drawCanvas(time = 0) {
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  ctx.globalAlpha = 0.58;
+
+  particles.forEach((particle, index) => {
+    particle.y -= particle.speed;
+    particle.x += Math.sin(time / 1200 + particle.phase) * 0.28 + pointerX * 0.3;
+
+    if (particle.y < -12) {
+      particle.y = window.innerHeight + 12;
+      particle.x = Math.random() * window.innerWidth;
+    }
+
+    ctx.beginPath();
+    ctx.fillStyle = particle.color;
+    ctx.arc(
+      particle.x + pointerX * (index % 7) * 5,
+      particle.y + pointerY * (index % 5) * 4,
+      particle.radius,
+      0,
+      Math.PI * 2,
+    );
+    ctx.fill();
+  });
+
+  ctx.globalAlpha = 0.18;
+  ctx.lineWidth = 1;
+
+  for (let i = 0; i < particles.length - 1; i += 3) {
+    const a = particles[i];
+    const b = particles[i + 1];
+    const distance = Math.hypot(a.x - b.x, a.y - b.y);
+
+    if (distance < 150) {
+      ctx.beginPath();
+      ctx.strokeStyle = "#9befff";
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+  }
+
+  requestAnimationFrame(drawCanvas);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+drawCanvas();
+setActiveChapter(0);
+    </script>
+  </body>
+</html>
